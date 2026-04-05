@@ -3,83 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Florist Demo | RegisCode</title>
+    <title>Florist Pro | RegisCode Demo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Montserrat', sans-serif; }
+        body { font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
         .serif { font-family: 'Playfair Display', serif; }
-        .glass {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .hero-bg {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=1000');
-            background-size: cover;
-            background-position: center;
-        }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.3); }
+        .cart-badge { position: absolute; top: -5px; right: -10px; background: #ec4899; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; }
     </style>
 </head>
-<body class="bg-pink-50 text-gray-800">
+<body class="bg-gray-50">
 
-    <!-- Header -->
+    <!-- Navigation -->
     <nav class="fixed w-full z-50 px-6 py-4 flex justify-between items-center glass">
-        <div class="text-2xl serif font-bold tracking-widest text-white">FLORA</div>
-        <div class="text-xs font-semibold bg-white text-pink-600 px-3 py-1 rounded-full shadow-md">DEMO BY REGISCODE</div>
+        <div class="text-2xl serif font-bold tracking-widest text-pink-600">FLORA</div>
+        <div class="flex items-center gap-6">
+            <button onclick="toggleCart()" class="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span id="cart-count" class="cart-badge">0</span>
+            </button>
+        </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="h-screen hero-bg flex flex-col justify-center items-center text-center px-6">
-        <h1 class="text-5xl md:text-7xl text-white serif italic mb-4">Գեղեցկությունը ամեն ծաղկի մեջ</h1>
-        <p class="text-white text-lg mb-8 max-w-md">Ստեղծում ենք հույզեր և հիշողություններ՝ թարմ և էկզոտիկ ծաղիկների միջոցով:</p>
-        <a href="#catalog" class="bg-white text-pink-600 px-8 py-3 rounded-full font-bold shadow-lg hover:bg-pink-100 transition-all">Տեսնել Տեսականին</a>
+    <!-- Hero -->
+    <section class="h-[60vh] flex flex-col justify-center items-center text-center px-6 bg-pink-100">
+        <h1 class="text-4xl md:text-6xl serif italic text-gray-800">RegisCode E-Commerce Demo</h1>
+        <p class="mt-4 text-gray-600 italic">Զամբյուղի և Պատվերների կառավարման համակարգ</p>
     </section>
 
-    <!-- Catalog Section -->
-    <section id="catalog" class="py-20 px-6">
-        <h2 class="text-3xl text-center serif mb-12">Մեր Բեսթսելերները</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            
-            <!-- Item 1 -->
-            <div class="bg-white rounded-2xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform">
-                <img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=600" alt="Rose" class="h-64 w-full object-cover">
-                <div class="p-6 text-center">
-                    <h3 class="text-xl font-semibold mb-2 italic serif">«Գարնանային Շունչ»</h3>
-                    <p class="text-pink-500 font-bold mb-4">15,000 ֏</p>
-                    <button class="w-full border border-pink-500 text-pink-500 py-2 rounded-lg hover:bg-pink-500 hover:text-white transition-colors text-sm uppercase tracking-widest">Պատվիրել</button>
-                </div>
+    <!-- Products -->
+    <section class="py-12 px-6 max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="product-list">
+            <!-- Product Card -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm">
+                <img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=400" class="rounded-xl w-full h-48 object-cover mb-4">
+                <h3 class="serif text-xl">Կարմիր Վարդեր</h3>
+                <p class="text-pink-600 font-bold">15,000 ֏</p>
+                <button onclick="addToCart('Կարմիր Վարդեր', 15000)" class="mt-4 w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-pink-600 transition">Ավելացնել Զամբյուղ</button>
             </div>
-
-            <!-- Item 2 -->
-            <div class="bg-white rounded-2xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform">
-                <img src="https://images.unsplash.com/photo-1596073413206-ba86ee6c491f?auto=format&fit=crop&q=80&w=600" alt="Lily" class="h-64 w-full object-cover">
-                <div class="p-6 text-center">
-                    <h3 class="text-xl font-semibold mb-2 italic serif">«Նրբություն»</h3>
-                    <p class="text-pink-500 font-bold mb-4">12,000 ֏</p>
-                    <button class="w-full border border-pink-500 text-pink-500 py-2 rounded-lg hover:bg-pink-500 hover:text-white transition-colors text-sm uppercase tracking-widest">Պատվիրել</button>
-                </div>
-            </div>
-
-            <!-- Item 3 -->
-            <div class="bg-white rounded-2xl overflow-hidden shadow-xl transform hover:scale-105 transition-transform">
-                <img src="https://images.unsplash.com/photo-1525310238806-f15a392e9e50?auto=format&fit=crop&q=80&w=600" alt="Box" class="h-64 w-full object-cover">
-                <div class="p-6 text-center">
-                    <h3 class="text-xl font-semibold mb-2 italic serif">«Պրեմիում Տուփ»</h3>
-                    <p class="text-pink-500 font-bold mb-4">25,000 ֏</p>
-                    <button class="w-full border border-pink-500 text-pink-500 py-2 rounded-lg hover:bg-pink-500 hover:text-white transition-colors text-sm uppercase tracking-widest">Պատվիրել</button>
-                </div>
-            </div>
-
         </div>
     </section>
 
-    <!-- Footer / CTA -->
-    <footer class="bg-white py-10 text-center border-t border-pink-100">
-        <p class="text-gray-500 text-sm italic serif">RegisCode - Թվայնացնում ենք ձեր գեղեցկությունը</p>
-        <p class="text-gray-400 text-[10px] mt-2 italic font-mono uppercase tracking-tighter">Powered by RegisCode Portfolio System</p>
+    <!-- Side Cart (Hidden by default) -->
+    <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-80 bg-white shadow-2xl z-[100] transform translate-x-full transition-transform p-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="serif text-2xl">Զամբյուղ</h2>
+            <button onclick="toggleCart()" class="text-gray-500">Փակել ✕</button>
+        </div>
+        <div id="cart-items" class="space-y-4"></div>
+        <div class="mt-8 border-t pt-4">
+            <p class="text-xl serif">Ընդամենը: <span id="cart-total">0</span> ֏</p>
+            <button onclick="checkout()" class="w-full mt-4 bg-pink-600 text-white py-3 rounded-xl font-bold">Ձևակերպել Պատվեր</button>
+        </div>
+    </div>
+
+    <!-- Admin Panel Section (Hidden for users) -->
+    <section id="admin-panel" class="hidden py-20 px-6 bg-gray-900 text-white">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl serif mb-6 text-pink-400">Admin Dashboard (RegisCode)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+                    <h3 class="font-bold mb-4">Ավելացնել նոր ապրանք</h3>
+                    <input type="text" placeholder="Անուն" class="w-full mb-2 p-2 bg-gray-700 rounded">
+                    <input type="number" placeholder="Գին" class="w-full mb-4 p-2 bg-gray-700 rounded">
+                    <button class="bg-pink-600 px-4 py-2 rounded">Պահպանել</button>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
+                    <h3 class="font-bold mb-4">Վերջին Պատվերները</h3>
+                    <ul class="text-sm text-gray-400" id="order-list">
+                        <li>Պատվեր #001 - 15,000 ֏</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-10 text-center text-gray-400 text-sm">
+        <button onclick="toggleAdmin()" class="hover:text-pink-600 transition">RegisCode Admin Access</button>
     </footer>
 
+    <script>
+        let cart = [];
+        
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            sidebar.classList.toggle('translate-x-full');
+        }
+
+        function toggleAdmin() {
+            const admin = document.getElementById('admin-panel');
+            admin.classList.toggle('hidden');
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function addToCart(name, price) {
+            cart.push({name, price});
+            updateCart();
+        }
+
+        function updateCart() {
+            const container = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            const countEl = document.getElementById('cart-count');
+            
+            container.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach((item, index) => {
+                total += item.price;
+                container.innerHTML += `
+                    <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                        <span class="text-sm">${item.name}</span>
+                        <span class="font-bold text-xs">${item.price} ֏</span>
+                    </div>
+                `;
+            });
+            
+            totalEl.innerText = total.toLocaleString();
+            countEl.innerText = cart.length;
+        }
+
+        function checkout() {
+            alert("Շնորհակալություն! Պատվերը ստացված է (RegisCode Demo)");
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+    </script>
 </body>
-      </html>
-      
+</html>
+
