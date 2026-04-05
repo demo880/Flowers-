@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | RegisCode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-white font-sans p-6">
+
+    <div class="max-w-6xl mx-auto">
+        <header class="flex justify-between items-center mb-10 border-b border-slate-800 pb-6">
+            <h1 class="text-3xl font-bold text-pink-500 italic">RegisCode <span class="text-white">Admin</span></h1>
+            <a href="index.html" class="text-slate-400 hover:text-white transition">← Դեպի Կայք</a>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <!-- Add Product -->
+            <div class="bg-slate-800 p-8 rounded-3xl border border-slate-700 shadow-xl">
+                <h2 class="text-xl mb-6 font-semibold flex items-center gap-2">✨ Ավելացնել Նոր Ապրանք</h2>
+                <form id="add-product-form" class="space-y-4">
+                    <input type="text" id="p-name" placeholder="Ծաղկի անվանումը" class="w-full p-4 bg-slate-700 border-none rounded-xl" required>
+                    <input type="text" id="p-img" placeholder="Նկարի հղումը (URL)" class="w-full p-4 bg-slate-700 border-none rounded-xl" required>
+                    <input type="number" id="p-price" placeholder="Գինը (֏)" class="w-full p-4 bg-slate-700 border-none rounded-xl" required>
+                    <textarea id="p-desc" placeholder="Կարճ նկարագրություն" class="w-full p-4 bg-slate-700 border-none rounded-xl h-24"></textarea>
+                    <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 py-4 rounded-xl font-bold transition-all shadow-lg shadow-pink-900/20">ՀՐԱՊԱՐԱԿԵԼ</button>
+                </form>
+            </div>
+
+            <!-- Orders Section -->
+            <div class="bg-slate-800 p-8 rounded-3xl border border-slate-700 shadow-xl">
+                <h2 class="text-xl mb-6 font-semibold flex items-center gap-2">📦 Վերջին Պատվերները</h2>
+                <div id="admin-orders" class="space-y-4">
+                    <!-- Orders dynamic -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const container = document.getElementById('admin-orders');
+            container.innerHTML = orders.reverse().map(o => `
+                <div class="p-5 bg-slate-700/50 border-l-4 border-pink-500 rounded-xl">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-bold text-pink-400">${o.phone}</span>
+                        <span class="text-xs text-slate-400 italic">Նոր Պատվեր</span>
+                    </div>
+                    <p class="text-sm text-slate-200 mb-1">📍 ${o.address}</p>
+                    <p class="text-sm text-slate-300">💐 ${o.items}</p>
+                    <p class="text-right font-bold text-white mt-2">${o.total}</p>
+                </div>
+            `).join('') || '<p class="text-slate-500 italic">Պատվերներ դեռ չկան:</p>';
+        }
+
+        document.getElementById('add-product-form').onsubmit = (e) => {
+            e.preventDefault();
+            const newFlower = {
+                id: Date.now(),
+                name: document.getElementById('p-name').value,
+                img: document.getElementById('p-img').value,
+                price: document.getElementById('p-price').value,
+                desc: document.getElementById('p-desc').value
+            };
+            let flowers = JSON.parse(localStorage.getItem('flowers')) || [];
+            flowers.push(newFlower);
+            localStorage.setItem('flowers', JSON.stringify(flowers));
+            alert("Ավելացվեց հաջողությամբ:");
+            e.target.reset();
+        };
+
+        loadOrders();
+    </script>
+</body>
+</html>
+
