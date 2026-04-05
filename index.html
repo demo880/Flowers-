@@ -3,136 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Florist Pro | RegisCode Demo</title>
+    <title>Flora Shop | RegisCode</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #fdf2f8; }
         .serif { font-family: 'Playfair Display', serif; }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.3); }
-        .cart-badge { position: absolute; top: -5px; right: -10px; background: #ec4899; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+        .badge { position: absolute; top: -5px; right: -5px; background: #db2777; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
-<body class="bg-gray-50">
+<body>
 
-    <!-- Navigation -->
+    <!-- Nav -->
     <nav class="fixed w-full z-50 px-6 py-4 flex justify-between items-center glass">
-        <div class="text-2xl serif font-bold tracking-widest text-pink-600">FLORA</div>
-        <div class="flex items-center gap-6">
-            <button onclick="toggleCart()" class="relative">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-                <span id="cart-count" class="cart-badge">0</span>
-            </button>
+        <div class="text-2xl serif font-bold text-pink-600 tracking-widest">FLORA</div>
+        <div class="flex gap-6">
+            <button class="relative text-2xl">❤️ <span id="fav-count" class="badge">0</span></button>
+            <button onclick="toggleCart()" class="relative text-2xl">🛒 <span id="cart-count" class="badge">0</span></button>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="h-[60vh] flex flex-col justify-center items-center text-center px-6 bg-pink-100">
-        <h1 class="text-4xl md:text-6xl serif italic text-gray-800">RegisCode E-Commerce Demo</h1>
-        <p class="mt-4 text-gray-600 italic">Զամբյուղի և Պատվերների կառավարման համակարգ</p>
-    </section>
+    <!-- Content -->
+    <main class="pt-28 pb-20 px-6 max-w-6xl mx-auto">
+        <h1 class="text-4xl md:text-5xl serif text-center mb-12 italic text-gray-800">Մեր Ծաղկեփնջերը</h1>
+        <div id="products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+    </main>
 
-    <!-- Products -->
-    <section class="py-12 px-6 max-w-6xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="product-list">
-            <!-- Product Card -->
-            <div class="bg-white p-4 rounded-2xl shadow-sm">
-                <img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=400" class="rounded-xl w-full h-48 object-cover mb-4">
-                <h3 class="serif text-xl">Կարմիր Վարդեր</h3>
-                <p class="text-pink-600 font-bold">15,000 ֏</p>
-                <button onclick="addToCart('Կարմիր Վարդեր', 15000)" class="mt-4 w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-pink-600 transition">Ավելացնել Զամբյուղ</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Side Cart (Hidden by default) -->
-    <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-80 bg-white shadow-2xl z-[100] transform translate-x-full transition-transform p-6 overflow-y-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="serif text-2xl">Զամբյուղ</h2>
-            <button onclick="toggleCart()" class="text-gray-500">Փակել ✕</button>
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-full md:w-96 bg-white shadow-2xl z-[60] transform translate-x-full transition-transform p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h2 class="text-2xl serif">Ձեր Զամբյուղը</h2>
+            <button onclick="toggleCart()" class="text-3xl">&times;</button>
         </div>
         <div id="cart-items" class="space-y-4"></div>
-        <div class="mt-8 border-t pt-4">
-            <p class="text-xl serif">Ընդամենը: <span id="cart-total">0</span> ֏</p>
-            <button onclick="checkout()" class="w-full mt-4 bg-pink-600 text-white py-3 rounded-xl font-bold">Ձևակերպել Պատվեր</button>
+        <div class="mt-10 border-t pt-6">
+            <div class="flex justify-between text-xl mb-6"><span>Ընդամենը:</span><span id="cart-total" class="font-bold">0 ֏</span></div>
+            <button onclick="openOrderModal()" class="w-full bg-pink-600 text-white py-4 rounded-xl font-bold uppercase tracking-widest">Պատվիրել</button>
         </div>
     </div>
 
-    <!-- Admin Panel Section (Hidden for users) -->
-    <section id="admin-panel" class="hidden py-20 px-6 bg-gray-900 text-white">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl serif mb-6 text-pink-400">Admin Dashboard (RegisCode)</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-                    <h3 class="font-bold mb-4">Ավելացնել նոր ապրանք</h3>
-                    <input type="text" placeholder="Անուն" class="w-full mb-2 p-2 bg-gray-700 rounded">
-                    <input type="number" placeholder="Գին" class="w-full mb-4 p-2 bg-gray-700 rounded">
-                    <button class="bg-pink-600 px-4 py-2 rounded">Պահպանել</button>
+    <!-- Order Modal -->
+    <div id="order-modal" class="fixed inset-0 bg-black/60 z-[70] hidden flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-3xl w-full max-w-md">
+            <h3 class="text-2xl serif mb-6 italic text-center">Առաքման Տվյալներ</h3>
+            <form id="checkout-form" class="space-y-4">
+                <input type="tel" id="phone" placeholder="Հեռախոսահամար" class="w-full p-4 border rounded-xl bg-gray-50" required>
+                <input type="text" id="address" placeholder="Առաքման հասցե" class="w-full p-4 border rounded-xl bg-gray-50" required>
+                <div class="flex gap-2">
+                    <input type="date" id="date" class="w-1/2 p-4 border rounded-xl bg-gray-50" required>
+                    <input type="time" id="time" class="w-1/2 p-4 border rounded-xl bg-gray-50" required>
                 </div>
-                <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-                    <h3 class="font-bold mb-4">Վերջին Պատվերները</h3>
-                    <ul class="text-sm text-gray-400" id="order-list">
-                        <li>Պատվեր #001 - 15,000 ֏</li>
-                    </ul>
-                </div>
-            </div>
+                <button type="submit" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold mt-4">ՀԱՍՏԱՏԵԼ</button>
+                <button type="button" onclick="closeOrderModal()" class="w-full text-gray-400">Չեղարկել</button>
+            </form>
         </div>
-    </section>
+    </div>
 
-    <footer class="py-10 text-center text-gray-400 text-sm">
-        <button onclick="toggleAdmin()" class="hover:text-pink-600 transition">RegisCode Admin Access</button>
+    <footer class="py-12 bg-white text-center border-t border-pink-100 mt-10">
+        <p class="text-gray-400 text-sm mb-4">RegisCode - Պրոֆեսիոնալ Լուծումներ</p>
+        <a href="admin.html" class="bg-gray-800 text-white px-8 py-3 rounded-full text-sm font-bold hover:bg-pink-600 transition-all">Մուտք Admin Panel</a>
     </footer>
 
     <script>
+        let products = JSON.parse(localStorage.getItem('flowers')) || [];
         let cart = [];
-        
-        function toggleCart() {
-            const sidebar = document.getElementById('cart-sidebar');
-            sidebar.classList.toggle('translate-x-full');
+        let favorites = JSON.parse(localStorage.getItem('favs')) || [];
+
+        function render() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = products.map(p => `
+                <div class="bg-white rounded-3xl shadow-sm overflow-hidden border border-pink-50 relative">
+                    <button onclick="toggleFav('${p.id}')" class="absolute top-4 right-4 bg-white/80 p-2 rounded-full shadow z-10 text-xl">
+                        ${favorites.includes(p.id) ? '❤️' : '🤍'}
+                    </button>
+                    <img src="${p.img}" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="serif text-2xl mb-2">${p.name}</h3>
+                        <p class="text-gray-400 text-sm mb-4">${p.desc}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-pink-600 font-bold text-lg">${p.price.toLocaleString()} ֏</span>
+                            <button onclick="addToCart('${p.id}')" class="bg-pink-100 text-pink-600 px-4 py-2 rounded-xl font-bold hover:bg-pink-600 hover:text-white transition">🛒 Զամբյուղ</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('fav-count').innerText = favorites.length;
         }
 
-        function toggleAdmin() {
-            const admin = document.getElementById('admin-panel');
-            admin.classList.toggle('hidden');
-            window.scrollTo(0, document.body.scrollHeight);
+        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('translate-x-full'); }
+        function openOrderModal() { if(cart.length > 0) document.getElementById('order-modal').classList.remove('hidden'); }
+        function closeOrderModal() { document.getElementById('order-modal').classList.add('hidden'); }
+
+        function addToCart(id) {
+            const prod = products.find(p => p.id == id);
+            cart.push(prod);
+            updateCartUI();
         }
 
-        function addToCart(name, price) {
-            cart.push({name, price});
-            updateCart();
+        function toggleFav(id) {
+            favorites = favorites.includes(id) ? favorites.filter(f => f != id) : [...favorites, id];
+            localStorage.setItem('favs', JSON.stringify(favorites));
+            render();
         }
 
-        function updateCart() {
-            const container = document.getElementById('cart-items');
-            const totalEl = document.getElementById('cart-total');
-            const countEl = document.getElementById('cart-count');
-            
-            container.innerHTML = '';
+        function updateCartUI() {
+            const list = document.getElementById('cart-items');
             let total = 0;
-            
-            cart.forEach((item, index) => {
-                total += item.price;
-                container.innerHTML += `
-                    <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
-                        <span class="text-sm">${item.name}</span>
-                        <span class="font-bold text-xs">${item.price} ֏</span>
+            list.innerHTML = cart.map((item, index) => {
+                total += parseInt(item.price);
+                return `
+                    <div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl">
+                        <span class="font-semibold text-sm">${item.name}</span>
+                        <div class="flex items-center gap-4">
+                            <span class="text-pink-600 font-bold">${item.price} ֏</span>
+                            <button onclick="removeFromCart(${index})" class="text-red-400 text-lg">&times;</button>
+                        </div>
                     </div>
                 `;
-            });
-            
-            totalEl.innerText = total.toLocaleString();
-            countEl.innerText = cart.length;
+            }).join('');
+            document.getElementById('cart-total').innerText = total.toLocaleString() + " ֏";
+            document.getElementById('cart-count').innerText = cart.length;
         }
 
-        function checkout() {
-            alert("Շնորհակալություն! Պատվերը ստացված է (RegisCode Demo)");
-            cart = [];
-            updateCart();
-            toggleCart();
-        }
+        function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
+
+        document.getElementById('checkout-form').onsubmit = (e) => {
+            e.preventDefault();
+            const order = {
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                items: cart.map(i => i.name).join(', '),
+                total: document.getElementById('cart-total').innerText
+            };
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            alert("Պատվերը ստացված է: RegisCode Admin-ը կապ կհաստատի:");
+            cart = []; updateCartUI(); closeOrderModal(); toggleCart();
+        };
+
+        render();
     </script>
 </body>
 </html>
+
+
 
